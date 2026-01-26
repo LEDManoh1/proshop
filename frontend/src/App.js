@@ -18,6 +18,7 @@ import UserEditScreen from './screens/UserEditScreen'
 import ProductListScreen from './screens/ProductListScreen'
 import ProductEditScreen from './screens/ProductEditScreen'
 import OrderListScreen from './screens/OrderListScreen'
+import ProductList from './components/ProductList'
 
 const App = () => {
   return (
@@ -56,6 +57,8 @@ const App = () => {
             exact
           />
           <Route path='/' component={HomeScreen} exact />
+          {/* Simple product list for quick testing */}
+          <Route path='/simple-products' component={ProductList} />
         </Container>
       </main>
       <Footer />

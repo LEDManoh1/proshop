@@ -28,6 +28,40 @@ Please do not post issues here that are related to your own code when taking the
 
 ## Usage
 
+### Ngrok (Expose local server publicly)
+
+If you want to expose your local backend (port 5000) or frontend (port 3000) to the internet for testing webhooks or sharing a running app, use ngrok.
+
+1) Install ngrok (choose one):
+
+- Install the ngrok CLI from https://ngrok.com/download
+- Or use it via npx (no global install required): `npx ngrok`
+
+2) (Optional) Add your ngrok auth token so you get a stable subdomain:
+
+```bash
+npx ngrok authtoken <your-authtoken>
+```
+
+3) Quick commands (from project root):
+
+- Expose backend only (port 5000):
+
+```bash
+npm run tunnel
+# this runs: npx ngrok http 5000
+```
+
+- Run frontend + backend + tunnel together:
+
+```bash
+npm run dev:tunnel
+# runs server, client, and npx ngrok http 5000 concurrently
+```
+
+4) Once ngrok is running it prints a public HTTPS URL (e.g. `https://abcd1234.ngrok.io`). Use that URL for external testing or webhooks (replace http://localhost:5000 with the ngrok URL).
+
+
 ### ES Modules in Node
 
 We use ECMAScript Modules in the backend in this project. Be sure to have at least Node v14.6+ or you will need to add the "--experimental-modules" flag.

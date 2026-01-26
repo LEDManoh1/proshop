@@ -6,6 +6,11 @@ import './bootstrap.min.css'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import axios from 'axios'
+
+// Use REACT_APP_API_URL (e.g. your ngrok HTTPS URL) as the API base URL in development.
+// If unset, relative paths (e.g. /api/...) will be used and requests go to the current origin.
+axios.defaults.baseURL = process.env.REACT_APP_API_URL || ''
 
 ReactDOM.render(
   <Provider store={store}>

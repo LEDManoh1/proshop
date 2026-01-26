@@ -35,7 +35,13 @@ const upload = multer({
 })
 
 router.post('/', upload.single('image'), (req, res) => {
-  res.send(`/${req.file.path}`)
+  if (!req.file) return res.status(400).json({ message: 'No file uploaded' })
+
+  // Normalize path separators and build absolute URL so the browser can fetch
+  const filePath = `/${req.file.path.replace(/\\/g, '/')}`
+  const fullUrl = `${req.protocol}://${req.get('host')}${filePath}`
+
+  res.send(fullUrl)
 })
 
 export default router

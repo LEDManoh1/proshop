@@ -9,6 +9,7 @@ import Order from './models/orderModel.js'
 import connectDB from './config/db.js'
 
 dotenv.config()
+console.log('Running seeder...')
 
 connectDB()
 
