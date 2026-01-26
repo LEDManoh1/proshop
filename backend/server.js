@@ -30,18 +30,18 @@ if (process.env.NODE_ENV === 'development') {
 // JSON parsing
 app.use(express.json())
 
-// Try to enable CORS if the `cors` package is installed. This uses dynamic import
-// so the server won't crash if `cors` is not installed. To enable, run:
-// npm install cors
-;(async () => {
-  try {
-    const cors = (await import('cors')).default
-    app.use(cors())
-    console.log('CORS enabled')
-  } catch (err) {
-    console.warn('CORS not installed; continuing without CORS')
-  }
-})()
+  // Try to enable CORS if the `cors` package is installed. This uses dynamic import
+  // so the server won't crash if `cors` is not installed. To enable, run:
+  // npm install cors
+  ; (async () => {
+    try {
+      const cors = (await import('cors')).default
+      app.use(cors())
+      console.log('CORS enabled')
+    } catch (err) {
+      console.warn('CORS not installed; continuing without CORS')
+    }
+  })()
 
 // API routes
 app.use('/api/products', productRoutes)
@@ -76,9 +76,10 @@ if (process.env.NODE_ENV !== 'production') {
   app.use(favicon(path.join(__dirname, '/frontend/public', 'favicon.ico')))
 } else {
   // Serve static build files in production
-  app.use(express.static(path.join(__dirname, '/frontend/build')))
+  const buildPath = path.join(__dirname, 'frontend', 'build')
+  app.use(express.static(buildPath))
   app.get('*', (req, res) =>
-    res.sendFile(path.resolve(__dirname, 'frontend', 'build', 'index.html'))
+    res.sendFile(path.resolve(buildPath, 'index.html'))
   )
 }
 

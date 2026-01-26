@@ -71,6 +71,30 @@ const products = [
     rating: 0,
     numReviews: 0,
   },
+  {
+    name: 'Dell Precision Desktop Tower',
+    image: '/images/dell_pc.png',
+    description:
+      'High-performance workstation with Intel Core i9 processor, 64GB RAM, and NVIDIA RTX graphics. Perfect for professional rendering and simulation.',
+    brand: 'Dell',
+    category: 'Electronics',
+    price: 2499.99,
+    countInStock: 5,
+    rating: 0,
+    numReviews: 0,
+  },
+  {
+    name: 'HP Omen Gaming Desktop',
+    image: '/images/hp_pc.png',
+    description:
+      'Immersive gaming experience with liquid cooling, RGB lighting, and the latest storage speeds. Built for enthusiasts and pro gamers.',
+    brand: 'HP',
+    category: 'Electronics',
+    price: 1899.99,
+    countInStock: 8,
+    rating: 0,
+    numReviews: 0,
+  },
 ]
 
 export default products

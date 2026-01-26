@@ -16,9 +16,7 @@ const connectDB = async () => {
 
   try {
     const conn = await mongoose.connect(process.env.MONGO_URI, {
-      useUnifiedTopology: true,
-      useNewUrlParser: true,
-      useCreateIndex: true,
+      // These options are no longer necessary in Mongoose 6+ and can cause warnings
     })
 
     console.log(`MongoDB Connected: ${conn.connection.host}`.cyan.underline)
