@@ -1,8 +1,10 @@
 import React, { useState } from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { useHistory } from 'react-router-dom'
+import { Search } from 'lucide-react'
 
-const SearchBox = ({ history }) => {
+const SearchBox = () => {
   const [keyword, setKeyword] = useState('')
+  const history = useHistory()
 
   const submitHandler = (e) => {
     e.preventDefault()
@@ -14,18 +16,16 @@ const SearchBox = ({ history }) => {
   }
 
   return (
-    <Form onSubmit={submitHandler} inline>
-      <Form.Control
+    <form onSubmit={submitHandler} className='relative flex-grow max-w-lg mx-4'>
+      <input
         type='text'
         name='q'
         onChange={(e) => setKeyword(e.target.value)}
-        placeholder='Search Products...'
-        className='mr-sm-2 ml-sm-5'
-      ></Form.Control>
-      <Button type='submit' variant='outline-success' className='p-2'>
-        Search
-      </Button>
-    </Form>
+        placeholder='Search products...'
+        className='w-full bg-gray-100 border-none rounded-full py-2 pl-10 pr-4 focus:ring-2 focus:ring-primary focus:bg-white transition-all duration-300 text-sm'
+      />
+      <Search className='absolute left-3 top-2.5 text-gray-400 h-4 w-4' />
+    </form>
   )
 }
 

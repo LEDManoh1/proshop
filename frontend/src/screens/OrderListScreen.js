@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
-import { LinkContainer } from 'react-router-bootstrap'
-import { Table, Button } from 'react-bootstrap'
+import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { ClipboardList, ExternalLink, CheckCircle, XCircle, User, Calendar, DollarSign } from 'lucide-react'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import { listOrders } from '../actions/orderActions'
@@ -24,59 +24,96 @@ const OrderListScreen = ({ history }) => {
   }, [dispatch, history, userInfo])
 
   return (
-    <>
-      <h1>Orders</h1>
+    <div className='pb-20'>
+      <div className='flex items-center justify-between mb-8'>
+        <div className='flex items-center space-x-3'>
+          <div className='p-3 bg-primary/10 text-primary rounded-2xl'>
+            <ClipboardList size={28} />
+          </div>
+          <h1 className='text-3xl font-black text-gray-900'>System Orders</h1>
+        </div>
+      </div>
+
       {loading ? (
         <Loader />
       ) : error ? (
         <Message variant='danger'>{error}</Message>
       ) : (
-        <Table striped bordered hover responsive className='table-sm'>
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>USER</th>
-              <th>DATE</th>
-              <th>TOTAL</th>
-              <th>PAID</th>
-              <th>DELIVERED</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders.map((order) => (
-              <tr key={order._id}>
-                <td>{order._id}</td>
-                <td>{order.user && order.user.name}</td>
-                <td>{order.createdAt.substring(0, 10)}</td>
-                <td>${order.totalPrice}</td>
-                <td>
-                  {order.isPaid ? (
-                    order.paidAt.substring(0, 10)
-                  ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
-                  )}
-                </td>
-                <td>
-                  {order.isDelivered ? (
-                    order.deliveredAt.substring(0, 10)
-                  ) : (
-                    <i className='fas fa-times' style={{ color: 'red' }}></i>
-                  )}
-                </td>
-                <td>
-                  <LinkContainer to={`/order/${order._id}`}>
-                    <Button variant='light' className='btn-sm'>
-                      Details
-                    </Button>
-                  </LinkContainer>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+        <div className='bg-white rounded-3xl shadow-premium border border-gray-100 overflow-hidden'>
+          <div className='overflow-x-auto'>
+            <table className='w-full text-left'>
+              <thead>
+                <tr className='bg-gray-50 border-b border-gray-100'>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Order ID</th>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Customer</th>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Date</th>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Total</th>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Paid</th>
+                  <th className='px-6 py-4 text-xs font-black text-gray-400 uppercase tracking-widest'>Delivered</th>
+                  <th className='px-6 py-4'></th>
+                </tr>
+              </thead>
+              <tbody className='divide-y divide-gray-50'>
+                {orders.map((order) => (
+                  <tr key={order._id} className='hover:bg-gray-50/50 transition-colors group'>
+                    <td className='px-6 py-4 text-sm font-medium text-gray-400'>#{order._id.substring(0, 8)}</td>
+                    <td className='px-6 py-4'>
+                      <div className='flex items-center space-x-2'>
+                        <User size={14} className='text-gray-400' />
+                        <span className='text-sm font-bold text-gray-900'>{order.user && order.user.name}</span>
+                      </div>
+                    </td>
+                    <td className='px-6 py-4'>
+                      <div className='flex items-center space-x-2'>
+                        <Calendar size={14} className='text-gray-400' />
+                        <span className='text-sm text-gray-500 font-medium'>{order.createdAt.substring(0, 10)}</span>
+                      </div>
+                    </td>
+                    <td className='px-6 py-4'>
+                      <div className='flex items-center space-x-1'>
+                        <DollarSign size={14} className='text-gray-400' />
+                        <span className='text-sm font-black text-gray-900'>{order.totalPrice}</span>
+                      </div>
+                    </td>
+                    <td className='px-6 py-4'>
+                      {order.isPaid ? (
+                        <span className='inline-flex items-center px-3 py-1 bg-green-50 text-green-700 text-xs font-bold rounded-full border border-green-100'>
+                          <CheckCircle size={12} className='mr-1' /> {order.paidAt.substring(0, 10)}
+                        </span>
+                      ) : (
+                        <span className='inline-flex items-center px-3 py-1 bg-red-50 text-red-700 text-xs font-bold rounded-full border border-red-100'>
+                          <XCircle size={12} className='mr-1' /> Unpaid
+                        </span>
+                      )}
+                    </td>
+                    <td className='px-6 py-4'>
+                      {order.isDelivered ? (
+                        <span className='inline-flex items-center px-3 py-1 bg-blue-50 text-blue-700 text-xs font-bold rounded-full border border-blue-100'>
+                          <CheckCircle size={12} className='mr-1' /> {order.deliveredAt.substring(0, 10)}
+                        </span>
+                      ) : (
+                        <span className='inline-flex items-center px-3 py-1 bg-amber-50 text-amber-700 text-xs font-bold rounded-full border border-amber-100'>
+                          <XCircle size={12} className='mr-1' /> Pending
+                        </span>
+                      )}
+                    </td>
+                    <td className='px-6 py-4 text-right'>
+                      <Link
+                        to={`/order/${order._id}`}
+                        className='inline-flex items-center px-4 py-2 bg-gray-100 hover:bg-primary hover:text-white rounded-lg text-xs font-bold text-gray-700 transition-all duration-300'
+                      >
+                        <ExternalLink size={14} className='mr-1.5' />
+                        Details
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
       )}
-    </>
+    </div>
   )
 }
 

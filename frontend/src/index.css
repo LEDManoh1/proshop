@@ -1,53 +1,49 @@
-main {
-  min-height: 80vh;
-}
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
-h3 {
-  padding: 1rem 0;
-}
-
-h1 {
-  font-size: 1.8rem;
-  padding: 1rem 0;
-}
-
-h2 {
-  font-size: 1.4rem;
-  padding: 0.5rem 0;
-}
-
-.rating span {
-  margin: 0.1rem;
-}
-
-/* carousel */
-.carousel-item-next,
-.carousel-item-prev,
-.carousel-item.active {
-  display: flex;
-}
-.carousel-caption {
-  position: absolute;
-  top: 0;
-}
-
-.carousel-caption h2 {
-  color: #fff;
-}
-
-.carousel img {
-  height: 300px;
-  padding: 30px;
-  margin: 40px;
-  border-radius: 50%;
-  margin-left: auto;
-  margin-right: auto;
-}
-.carousel a {
-  margin: 0 auto;
-}
-@media (max-width: 900px) {
-  .carousel-caption h2 {
-    font-size: 2.5vw;
+@layer base {
+  body {
+    @apply bg-background text-secondary-dark font-sans antialiased;
   }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    @apply font-bold text-gray-900;
+  }
+}
+
+@layer components {
+  .btn-primary {
+    @apply bg-primary hover:bg-primary-dark text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md transform hover:-translate-y-0.5;
+  }
+
+  .btn-light {
+    @apply bg-white border border-gray-200 text-gray-700 hover:bg-gray-50 font-semibold py-2 px-4 rounded-lg transition-all duration-300 shadow-sm hover:shadow-md;
+  }
+
+  .glass-card {
+    @apply bg-white bg-opacity-80 backdrop-filter backdrop-blur-lg border border-white border-opacity-20 rounded-2xl;
+  }
+
+  .section-title {
+    @apply text-3xl font-extrabold tracking-tight sm:text-4xl mb-8;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+  @apply bg-gray-300 rounded-full hover:bg-gray-400 transition-colors;
 }

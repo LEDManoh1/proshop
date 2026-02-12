@@ -1,8 +1,8 @@
 import axios from 'axios'
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { Form, Button } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
+import { ArrowLeft, Package, Tag, Image as ImageIcon, Briefcase, Layout, FileText, Upload, Save } from 'lucide-react'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import FormContainer from '../components/FormContainer'
@@ -91,105 +91,167 @@ const ProductEditScreen = ({ match, history }) => {
     )
   }
 
+  const inputClasses = 'w-full bg-gray-50 border-none rounded-xl py-3 pl-11 pr-4 text-gray-900 placeholder-gray-400 focus:ring-2 focus:ring-primary focus:bg-white transition-all duration-300'
+  const labelClasses = 'block text-sm font-bold text-gray-700 mb-2 ml-1'
+
   return (
-    <>
-      <Link to='/admin/productlist' className='btn btn-light my-3'>
-        Go Back
+    <div className='py-8'>
+      <Link
+        to='/admin/productlist'
+        className='inline-flex items-center space-x-2 text-primary font-bold hover:translate-x-[-4px] transition-transform duration-300 mb-8'
+      >
+        <ArrowLeft size={18} />
+        <span>Back to Inventory</span>
       </Link>
+
       <FormContainer>
-        <h1>Edit Product</h1>
+        <div className='flex items-center space-x-3 mb-8'>
+          <div className='p-3 bg-primary/10 text-primary rounded-2xl'>
+            <Package size={24} />
+          </div>
+          <h1 className='text-3xl font-black text-gray-900'>Edit Product</h1>
+        </div>
+
         {loadingUpdate && <Loader />}
         {errorUpdate && <Message variant='danger'>{errorUpdate}</Message>}
+
         {loading ? (
           <Loader />
         ) : error ? (
           <Message variant='danger'>{error}</Message>
         ) : (
-          <Form onSubmit={submitHandler}>
-            <Form.Group controlId='name'>
-              <Form.Label>Name</Form.Label>
-              <Form.Control
-                type='name'
-                placeholder='Enter name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+          <form onSubmit={submitHandler} className='space-y-6'>
+            <div>
+              <label className={labelClasses}>Product Name</label>
+              <div className='relative'>
+                <Package className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                <input
+                  type='text'
+                  placeholder='Enter name'
+                  value={name}
+                  required
+                  onChange={(e) => setName(e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+            </div>
 
-            <Form.Group controlId='price'>
-              <Form.Label>Price</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter price'
-                value={price}
-                onChange={(e) => setPrice(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+            <div className='grid grid-cols-2 gap-4'>
+              <div>
+                <label className={labelClasses}>Price ($)</label>
+                <div className='relative'>
+                  <Tag className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                  <input
+                    type='number'
+                    placeholder='0.00'
+                    value={price}
+                    required
+                    onChange={(e) => setPrice(e.target.value)}
+                    className={inputClasses}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={labelClasses}>Stock Count</label>
+                <div className='relative'>
+                  <Layout className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                  <input
+                    type='number'
+                    placeholder='0'
+                    value={countInStock}
+                    required
+                    onChange={(e) => setCountInStock(e.target.value)}
+                    className={inputClasses}
+                  />
+                </div>
+              </div>
+            </div>
 
-            <Form.Group controlId='image'>
-              <Form.Label>Image</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter image url'
-                value={image}
-                onChange={(e) => setImage(e.target.value)}
-              ></Form.Control>
-              <Form.File
-                id='image-file'
-                label='Choose File'
-                custom
-                onChange={uploadFileHandler}
-              ></Form.File>
-              {uploading && <Loader />}
-            </Form.Group>
+            <div>
+              <label className={labelClasses}>Product Image URL</label>
+              <div className='relative'>
+                <ImageIcon className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                <input
+                  type='text'
+                  placeholder='Enter image URL'
+                  value={image}
+                  required
+                  onChange={(e) => setImage(e.target.value)}
+                  className={inputClasses}
+                />
+              </div>
+              <div className='mt-4 p-4 border-2 border-dashed border-gray-100 rounded-2xl bg-gray-50 flex items-center justify-between'>
+                <div className='flex items-center space-x-3'>
+                  <Upload size={20} className='text-gray-400' />
+                  <span className='text-xs font-bold text-gray-500 uppercase tracking-widest'>Upload Photo</span>
+                </div>
+                <input
+                  type='file'
+                  id='image-file'
+                  onChange={uploadFileHandler}
+                  className='text-sm text-gray-500 file:bg-white file:border-none file:px-4 file:py-1.5 file:rounded-lg file:font-bold file:text-primary file:mr-2 file:cursor-pointer cursor-pointer'
+                />
+              </div>
+              {uploading && <div className='mt-2'><Loader /></div>}
+            </div>
 
-            <Form.Group controlId='brand'>
-              <Form.Label>Brand</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter brand'
-                value={brand}
-                onChange={(e) => setBrand(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+            <div className='grid grid-cols-2 gap-4'>
+              <div>
+                <label className={labelClasses}>Brand</label>
+                <div className='relative'>
+                  <Briefcase className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                  <input
+                    type='text'
+                    placeholder='Enter brand'
+                    value={brand}
+                    required
+                    onChange={(e) => setBrand(e.target.value)}
+                    className={inputClasses}
+                  />
+                </div>
+              </div>
+              <div>
+                <label className={labelClasses}>Category</label>
+                <div className='relative'>
+                  <Tag className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                  <input
+                    type='text'
+                    placeholder='Enter category'
+                    value={category}
+                    required
+                    onChange={(e) => setCategory(e.target.value)}
+                    className={inputClasses}
+                  />
+                </div>
+              </div>
+            </div>
 
-            <Form.Group controlId='countInStock'>
-              <Form.Label>Count In Stock</Form.Label>
-              <Form.Control
-                type='number'
-                placeholder='Enter countInStock'
-                value={countInStock}
-                onChange={(e) => setCountInStock(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
+            <div>
+              <label className={labelClasses}>Description</label>
+              <div className='relative'>
+                <FileText className='absolute left-4 top-3.5 text-gray-400' size={18} />
+                <textarea
+                  placeholder='Enter description'
+                  value={description}
+                  required
+                  rows={4}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className={`${inputClasses} resize-none min-h-[120px]`}
+                />
+              </div>
+            </div>
 
-            <Form.Group controlId='category'>
-              <Form.Label>Category</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter category'
-                value={category}
-                onChange={(e) => setCategory(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Form.Group controlId='description'>
-              <Form.Label>Description</Form.Label>
-              <Form.Control
-                type='text'
-                placeholder='Enter description'
-                value={description}
-                onChange={(e) => setDescription(e.target.value)}
-              ></Form.Control>
-            </Form.Group>
-
-            <Button type='submit' variant='primary'>
-              Update
-            </Button>
-          </Form>
+            <button
+              type='submit'
+              className='w-full py-4 bg-primary text-white rounded-xl font-black shadow-lg hover:shadow-xl hover:bg-primary-dark transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center space-x-2'
+            >
+              <Save size={20} />
+              <span>Update Product</span>
+            </button>
+          </form>
         )}
       </FormContainer>
-    </>
+    </div>
   )
 }
 
