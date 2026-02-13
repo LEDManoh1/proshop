@@ -1,43 +1,41 @@
 import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const Footer = () => {
   return (
-    <footer className='bg-white border-t border-gray-100 py-12 mt-20'>
-      <div className='max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'>
-        <div className='grid grid-cols-1 md:grid-cols-4 gap-8'>
-          <div className='col-span-1 md:col-span-2'>
-            <span className='text-2xl font-black tracking-tighter text-primary'>
-              PRO<span className='text-secondary-dark'>SHOP</span>
+    <footer className='py-5 mt-5' style={{ backgroundColor: 'rgba(10, 25, 47, 0.95)', borderTop: '1px solid var(--glass-border)' }}>
+      <Container>
+        <Row>
+          <Col md={6} className='mb-4'>
+            <span className='h3' style={{ fontFamily: 'Orbitron, sans-serif', color: 'var(--accent-color)' }}>
+              PRO<span style={{ color: 'var(--text-color)' }}>SHOP</span>
             </span>
-            <p className='mt-4 text-gray-500 text-sm max-w-xs'>
+            <p className='mt-3 text-muted' style={{ maxWidth: '300px' }}>
               Experience the best in modern eCommerce. Premium products, seamless shopping, and professional service.
             </p>
-          </div>
-          <div>
-            <h3 className='text-sm font-bold text-gray-900 uppercase tracking-wider'>Customer Service</h3>
-            <ul className='mt-4 space-y-2'>
-              <li><a href='#' className='text-sm text-gray-500 hover:text-primary transition-colors'>Shipping Policy</a></li>
-              <li><a href='#' className='text-sm text-gray-500 hover:text-primary transition-colors'>Return & Refund</a></li>
-              <li><a href='#' className='text-sm text-gray-500 hover:text-primary transition-colors'>Privacy Policy</a></li>
+          </Col>
+          <Col md={3} className='mb-4'>
+            <h5 className='text-uppercase mb-3' style={{ color: 'var(--text-color)' }}>Customer Service</h5>
+            <ul className='list-unstyled'>
+              <li><a href='#' className='text-muted hover-accent'>Shipping Policy</a></li>
+              <li><a href='#' className='text-muted hover-accent'>Return & Refund</a></li>
+              <li><a href='#' className='text-muted hover-accent'>Privacy Policy</a></li>
             </ul>
-          </div>
-          <div>
-            <h3 className='text-sm font-bold text-gray-900 uppercase tracking-wider'>Contact</h3>
-            <ul className='mt-4 space-y-2'>
-              <li className='text-sm text-gray-500'>support@proshop.com</li>
-              <li className='text-sm text-gray-500'>+1 (555) 123-4567</li>
+          </Col>
+          <Col md={3} className='mb-4'>
+            <h5 className='text-uppercase mb-3' style={{ color: 'var(--text-color)' }}>Contact</h5>
+            <ul className='list-unstyled text-muted'>
+              <li>support@proshop.com</li>
+              <li>+1 (555) 123-4567</li>
             </ul>
-          </div>
-        </div>
-        <div className='mt-12 border-t border-gray-100 pt-8 flex justify-between items-center'>
-          <p className='text-sm text-gray-400'>
+          </Col>
+        </Row>
+        <Row className='mt-4 pt-4 border-top border-secondary'>
+          <Col className='text-center text-muted'>
             &copy; {new Date().getFullYear()} ProShop. All rights reserved.
-          </p>
-          <div className='flex space-x-6'>
-            {/* Social Icons Placeholder */}
-          </div>
-        </div>
-      </div>
+          </Col>
+        </Row>
+      </Container>
     </footer>
   )
 }

@@ -1,12 +1,15 @@
 import React from 'react'
+import { Container, Row, Col } from 'react-bootstrap'
 
 const FormContainer = ({ children }) => {
   return (
-    <div className='max-w-xl mx-auto px-4'>
-      <div className='bg-white rounded-3xl p-8 sm:p-12 shadow-premium border border-gray-100'>
-        {children}
-      </div>
-    </div>
+    <Container>
+      <Row className='justify-content-md-center'>
+        <Col xs={12} md={6}>
+          {children}
+        </Col>
+      </Row>
+    </Container>
   )
 }
 

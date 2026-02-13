@@ -1,12 +1,13 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
+import { Row, Col, Container } from 'react-bootstrap'
 import Product from '../components/Product'
 import Message from '../components/Message'
 import Loader from '../components/Loader'
 import Paginate from '../components/Paginate'
-import ProductCarousel from '../components/ProductCarousel'
 import Meta from '../components/Meta'
+import Hero from '../components/Hero'
 import { listProducts } from '../actions/productActions'
 
 const HomeScreen = ({ match }) => {
@@ -27,41 +28,38 @@ const HomeScreen = ({ match }) => {
     <>
       <Meta />
       {!keyword ? (
-        <div className='mb-12'>
-          <ProductCarousel />
-        </div>
+        <Hero />
       ) : (
-        <Link to='/' className='inline-flex items-center px-4 py-2 mb-8 bg-white border border-gray-200 rounded-xl text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors shadow-sm'>
+        <Link to='/' className='btn btn-light my-3'>
           Go Back
         </Link>
       )}
 
-      <div className='flex items-center justify-between mb-8'>
-        <h1 className='text-3xl font-black tracking-tight text-gray-900'>
-          {keyword ? `Search Results for "${keyword}"` : 'Discover Latest'}
+      <Container id="products-grid">
+        <h1 className='text-center my-4'>
+          {keyword ? `Search Results for "${keyword}"` : 'Latest Products'}
         </h1>
-      </div>
-
-      {loading ? (
-        <Loader />
-      ) : error ? (
-        <Message variant='danger'>{error}</Message>
-      ) : (
-        <>
-          <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8'>
-            {products.map((product) => (
-              <Product key={product._id} product={product} />
-            ))}
-          </div>
-          <div className='mt-12'>
+        {loading ? (
+          <Loader />
+        ) : error ? (
+          <Message variant='danger'>{error}</Message>
+        ) : (
+          <>
+            <Row>
+              {products.map((product) => (
+                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                  <Product product={product} />
+                </Col>
+              ))}
+            </Row>
             <Paginate
               pages={pages}
               page={page}
               keyword={keyword ? keyword : ''}
             />
-          </div>
-        </>
-      )}
+          </>
+        )}
+      </Container>
     </>
   )
 }

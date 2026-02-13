@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import { Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
-import { MapPin, CreditCard, ShoppingBag, ArrowRight } from 'lucide-react'
 import Message from '../components/Message'
 import CheckoutSteps from '../components/CheckoutSteps'
 import { createOrder } from '../actions/orderActions'
@@ -10,6 +10,7 @@ import { USER_DETAILS_RESET } from '../constants/userConstants'
 
 const PlaceOrderScreen = ({ history }) => {
   const dispatch = useDispatch()
+
   const cart = useSelector((state) => state.cart)
 
   if (!cart.shippingAddress.address) {
@@ -37,7 +38,7 @@ const PlaceOrderScreen = ({ history }) => {
   const { order, success, error } = orderCreate
 
   useEffect(() => {
-    if (success) {
+    if (success && order) {
       history.push(`/order/${order._id}`)
       dispatch({ type: USER_DETAILS_RESET })
       dispatch({ type: ORDER_CREATE_RESET })
@@ -59,120 +60,109 @@ const PlaceOrderScreen = ({ history }) => {
     )
   }
 
-  const sectionHeaderClasses = 'flex items-center space-x-2 text-xl font-black text-gray-900 mb-4'
-  const cardClasses = 'bg-white rounded-3xl p-6 sm:p-8 shadow-premium border border-gray-100'
-
   return (
-    <div className='pb-20'>
+    <>
       <CheckoutSteps step1 step2 step3 step4 />
-
-      <div className='grid grid-cols-1 lg:grid-cols-12 gap-12'>
-        <div className='lg:col-span-8 space-y-8'>
-          {/* Shipping Section */}
-          <div className={cardClasses}>
-            <div className={sectionHeaderClasses}>
-              <MapPin size={24} className='text-primary' />
+      <Row>
+        <Col md={8}>
+          <ListGroup variant='flush'>
+            <ListGroup.Item>
               <h2>Shipping</h2>
-            </div>
-            <div className='bg-gray-50 rounded-2xl p-4 border border-gray-100'>
-              <p className='text-gray-700 font-medium'>
+              <p>
+                <strong>Address:</strong>
                 {cart.shippingAddress.address}, {cart.shippingAddress.city}{' '}
-                {cart.shippingAddress.postalCode}, {cart.shippingAddress.country}
+                {cart.shippingAddress.postalCode},{' '}
+                {cart.shippingAddress.country}
               </p>
-            </div>
-          </div>
+            </ListGroup.Item>
 
-          {/* Payment Section */}
-          <div className={cardClasses}>
-            <div className={sectionHeaderClasses}>
-              <CreditCard size={24} className='text-primary' />
+            <ListGroup.Item>
               <h2>Payment Method</h2>
-            </div>
-            <div className='bg-gray-50 rounded-2xl p-4 border border-gray-100'>
-              <p className='text-gray-700 font-medium'>
-                <strong>Method: </strong>{cart.paymentMethod}
-              </p>
-            </div>
-          </div>
+              <strong>Method: </strong>
+              {cart.paymentMethod}
+            </ListGroup.Item>
 
-          {/* Items Section */}
-          <div className={cardClasses}>
-            <div className={sectionHeaderClasses}>
-              <ShoppingBag size={24} className='text-primary' />
+            <ListGroup.Item>
               <h2>Order Items</h2>
-            </div>
-            {cart.cartItems.length === 0 ? (
-              <Message>Your cart is empty</Message>
-            ) : (
-              <div className='space-y-4'>
-                {cart.cartItems.map((item, index) => (
-                  <div key={index} className='flex items-center justify-between pb-4 border-b border-gray-50 last:border-0 last:pb-0'>
-                    <div className='flex items-center space-x-4'>
-                      <div className='w-16 h-16 rounded-xl overflow-hidden bg-gray-50 border border-gray-100'>
-                        <img src={item.image} alt={item.name} className='w-full h-full object-cover' />
-                      </div>
-                      <div>
-                        <Link to={`/product/${item.product}`} className='font-bold text-gray-900 hover:text-primary transition-colors line-clamp-1'>
-                          {item.name}
-                        </Link>
-                        <p className='text-xs text-gray-400 font-medium'>{item.qty} x ${item.price}</p>
-                      </div>
-                    </div>
-                    <div className='text-right'>
-                      <p className='font-black text-gray-900'>${(item.qty * item.price).toFixed(2)}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
-          </div>
-        </div>
-
-        {/* Sidebar Summary */}
-        <div className='lg:col-span-4'>
-          <div className='bg-white rounded-3xl p-8 shadow-premium border border-gray-100 sticky top-24'>
-            <h2 className='text-2xl font-black text-gray-900 mb-8'>Order Summary</h2>
-
-            <div className='space-y-4 mb-8'>
-              <div className='flex justify-between text-gray-500 font-medium'>
-                <span>Items Price</span>
-                <span className='text-gray-900 font-bold'>${cart.itemsPrice}</span>
-              </div>
-              <div className='flex justify-between text-gray-500 font-medium'>
-                <span>Shipping</span>
-                <span className={`${Number(cart.shippingPrice) === 0 ? 'text-green-600 font-black' : 'text-gray-900 font-bold'}`}>
-                  {Number(cart.shippingPrice) === 0 ? 'Free' : `$${cart.shippingPrice}`}
-                </span>
-              </div>
-              <div className='flex justify-between text-gray-500 font-medium'>
-                <span>Tax (15%)</span>
-                <span className='text-gray-900 font-bold'>${cart.taxPrice}</span>
-              </div>
-              <div className='pt-6 border-t border-gray-50 flex justify-between items-center'>
-                <span className='text-xl font-bold text-gray-900'>Total</span>
-                <span className='text-3xl font-black text-primary'>${cart.totalPrice}</span>
-              </div>
-            </div>
-
-            {error && <Message variant='danger'>{error}</Message>}
-
-            <button
-              type='button'
-              disabled={cart.cartItems.length === 0}
-              onClick={placeOrderHandler}
-              className='w-full py-4 bg-primary text-white rounded-2xl font-black shadow-lg hover:shadow-xl hover:bg-primary-dark transition-all duration-300 transform active:scale-[0.98] flex items-center justify-center space-x-2'
-            >
-              <span>Place Order</span>
-              <ArrowRight size={20} />
-            </button>
-
-            <p className='mt-6 text-center text-xs text-gray-500 bg-gray-50 p-3 rounded-xl border border-gray-100'>
-              By placing your order, you agree to ProShop's terms of use and privacy policy.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
+              {cart.cartItems.length === 0 ? (
+                <Message>Your cart is empty</Message>
+              ) : (
+                <ListGroup variant='flush'>
+                  {cart.cartItems.map((item, index) => (
+                    <ListGroup.Item key={index}>
+                      <Row>
+                        <Col md={1}>
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            fluid
+                            rounded
+                          />
+                        </Col>
+                        <Col>
+                          <Link to={`/product/${item.product}`}>
+                            {item.name}
+                          </Link>
+                        </Col>
+                        <Col md={4}>
+                          {item.qty} x ${item.price} = ${item.qty * item.price}
+                        </Col>
+                      </Row>
+                    </ListGroup.Item>
+                  ))}
+                </ListGroup>
+              )}
+            </ListGroup.Item>
+          </ListGroup>
+        </Col>
+        <Col md={4}>
+          <Card>
+            <ListGroup variant='flush'>
+              <ListGroup.Item>
+                <h2>Order Summary</h2>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Items</Col>
+                  <Col>${cart.itemsPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Shipping</Col>
+                  <Col>${cart.shippingPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Tax</Col>
+                  <Col>${cart.taxPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Row>
+                  <Col>Total</Col>
+                  <Col>${cart.totalPrice}</Col>
+                </Row>
+              </ListGroup.Item>
+              <ListGroup.Item>
+                {error && <Message variant='danger'>{error}</Message>}
+              </ListGroup.Item>
+              <ListGroup.Item>
+                <Button
+                  type='button'
+                  className='btn-block'
+                  disabled={cart.cartItems === 0}
+                  onClick={placeOrderHandler}
+                >
+                  Place Order
+                </Button>
+              </ListGroup.Item>
+            </ListGroup>
+          </Card>
+        </Col>
+      </Row>
+    </>
   )
 }
 
